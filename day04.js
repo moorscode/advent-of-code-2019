@@ -6,24 +6,39 @@ const valid = [];
 for ( let i = start; i <= end; i++ ) {
 	const parts = i.toString().split( "" ).map( ( n ) => parseInt( n, 10 ) );
 
-	let checks = 0;
-
-	// Check for doubles
-	for ( let x = 0; x < 5; x++ ) {
-		if ( parts[ x ] === parts[ x + 1 ] ) {
-			checks += 1;
-			break;
-		}
-	}
+	let skip = false;
 
 	for ( let x = 0; x < 5; x++ ) {
 		if ( parts[ x ] > parts[ x + 1 ] ) {
-			checks -= 1;
+			skip = true;
 			break;
 		}
 	}
 
-	if ( checks > 0 ) {
+	if ( skip ) {
+		continue;
+	}
+
+	// Check for doubles.
+	let hasDouble = false;
+	for ( let x = 0; x < 5; x++ ) {
+		let double = false;
+		if ( parts[ x ] === parts[ x + 1 ] ) {
+			double = true;
+			if ( parts[ x - 1 ] && parts[ x ] === parts[ x - 1 ] ) {
+				double = false;
+			}
+			if ( parts[ x + 2 ] && parts[ x ] === parts[ x + 2 ] ) {
+				double = false;
+			}
+		}
+		if ( double ) {
+		    hasDouble = double;
+			break;
+		}
+	}
+
+	if ( hasDouble ) {
 		valid.push( i );
 	}
 }
